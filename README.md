@@ -6,9 +6,11 @@ be-orderinig is a web component decorator / custom attribute / behavior / direct
 <my-list-view-model></my-list-view-model>
 ...
 <button be-ordering='{
-    "observe": "my-list-view-model",
-    "
-    "onSet": "list",
-    "on
+    "beObservant":{
+        "observe": "my-list-view-model",
+        "onSet": "list",
+        "sortOn": "columnA",
+    },
+    "beNoticed":"click"
 }'>Sort Column A</button>
 ```
