@@ -9,7 +9,7 @@
   "dependencies": {
     "be-decorated": "0.0.89",
     "be-hive": "0.0.36",
-    "be-observant": "0.0.101"
+    "be-observant": "0.0.102"
   },
   "repository": {
     "type": "git",
