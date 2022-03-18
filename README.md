@@ -20,3 +20,5 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
         }
     }'>Sort Column A<span class=dir></span></button>
 ```
+
+TODO:  Allow sorting on DOM elements.
