@@ -2,6 +2,7 @@ import {BeOrderingActions, BeOrderingProps, BeOrderingVirtualProps} from './type
 import {register} from 'be-hive/register.js';
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {hookUp} from 'be-observant/hookUp.js';
+import { RenderContext } from 'trans-render/lib/types';
 
 export class BeOrdering implements BeOrderingActions{
     #ignoreNextUpdate = false;
@@ -34,9 +35,30 @@ export class BeOrdering implements BeOrderingActions{
         this.#ignoreNextUpdate = true;
         (<any>element)[propName] = [...listVal]; 
     }
-    onToggleEvent({proxy, toggleEvent, direction}: this){
-        proxy.addEventListener(toggleEvent, () => {
-            proxy.direction = direction === 'asc' ? 'desc' : 'asc';
+    onToggleEvent({proxy, toggleEvent, ascTransform, descTransform}: this){
+        proxy.addEventListener(toggleEvent, async () => {
+            proxy.direction = proxy.direction === 'asc' ? 'desc' : 'asc';
+            if(ascTransform || descTransform){
+                const {DTR} = await import('trans-render/lib/DTR.js');
+                const ctx: RenderContext = {
+                    host: proxy as any as HTMLElement,
+
+                };
+                switch(proxy.direction){
+                    case 'asc':
+                        if(ascTransform !== undefined){
+                            ctx.match = ascTransform;
+                            DTR.transform(proxy, ctx);
+                        }
+                        break;
+                    case 'desc':
+                        if(descTransform !== undefined){
+                            ctx.match = descTransform;
+                            DTR.transform(proxy, ctx);
+                        }
+                        break;
+                }
+            }
         });
     }
 }
@@ -55,7 +77,7 @@ define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, B
         propDefaults:{
             upgrade,
             ifWantsToBe,
-            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
+            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform'],
             actions:{
                 onList: 'list',
                 beOrdered: {

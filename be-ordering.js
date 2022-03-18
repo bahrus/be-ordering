@@ -35,9 +35,29 @@ export class BeOrdering {
         this.#ignoreNextUpdate = true;
         element[propName] = [...listVal];
     }
-    onToggleEvent({ proxy, toggleEvent, direction }) {
-        proxy.addEventListener(toggleEvent, () => {
-            proxy.direction = direction === 'asc' ? 'desc' : 'asc';
+    onToggleEvent({ proxy, toggleEvent, ascTransform, descTransform }) {
+        proxy.addEventListener(toggleEvent, async () => {
+            proxy.direction = proxy.direction === 'asc' ? 'desc' : 'asc';
+            if (ascTransform || descTransform) {
+                const { DTR } = await import('trans-render/lib/DTR.js');
+                const ctx = {
+                    host: proxy,
+                };
+                switch (proxy.direction) {
+                    case 'asc':
+                        if (ascTransform !== undefined) {
+                            ctx.match = ascTransform;
+                            DTR.transform(proxy, ctx);
+                        }
+                        break;
+                    case 'desc':
+                        if (descTransform !== undefined) {
+                            ctx.match = descTransform;
+                            DTR.transform(proxy, ctx);
+                        }
+                        break;
+                }
+            }
         });
     }
 }
@@ -50,7 +70,7 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
-            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
+            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform'],
             actions: {
                 onList: 'list',
                 beOrdered: {

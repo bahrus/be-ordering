@@ -6,6 +6,8 @@ export interface BeOrderingVirtualProps{
     direction: string;
     listVal: any[];
     observedElement: WeakRef<Element>;
+    ascTransform: any;
+    descTransform: any;
 }
 
 export interface BeOrderingProps extends BeOrderingVirtualProps{
