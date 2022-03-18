@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form be-reformable='{
+        "autoSubmit": true,
+        "debug": true
+    }'
+
+        target="[-list]"
+        action="test.json"
+    >
+    </form>
+    <xtal-vlist -list></xtal-vlist>
+    <button be-ordering='{
+        "list": {
+            "observe": "xtal-vlist",
+            "onSet": "list",
+            "vft": "list"
+        },
+        "sortOn": "first_name"
+    }'>sort</button>
+    <script type=importmap>
+        {
+            "imports": {
+                "trans-render/": "../../node_modules/trans-render/",
+                "xtal-element/": "../../node_modules/xtal-element/",
+                "be-hive/": "../../node_modules/be-hive/",
+                "be-decorated/": "../../node_modules/be-decorated/",
+                "be-deslotted/": "../../node_modules/be-deslotted/",
+                "be-intersectional/": "../../node_modules/be-intersectional/",
+                "be-observant/": "../../node_modules/be-observant/",
+                "be-reformable/": "../../node_modules/be-reformable/",
+                "be-repeated/": "../../node_modules/be-repeated/",
+                "xtal-vlist/": "../../node_modules/xtal-vlist/"
+            }
+        }
+    </script>
+    <script type='module'>
+        import '../be-ordering.js';
+        import 'be-reformable/be-reformable.js';
+        import 'xtal-vlist/xtal-vlist.js';
+    </script>
+</body>
+</html>

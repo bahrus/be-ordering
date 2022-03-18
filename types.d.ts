@@ -5,6 +5,7 @@ export interface BeOrderingVirtualProps{
     toggleEvent: string;
     initialOrder: string;
     listVal: any[];
+    observedElement: WeakRef<Element>;
 }
 
 export interface BeOrderingProps extends BeOrderingVirtualProps{

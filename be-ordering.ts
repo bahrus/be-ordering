@@ -4,15 +4,19 @@ import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
 import {hookUp} from 'be-observant/hookUp.js';
 
 export class BeOrdering implements BeOrderingActions{
-    #ref: WeakRef<Element> | undefined;
+    #ignoreNextUpdate = false;
     async onList({list, proxy}: this){
         const {element} = await hookUp(list, proxy, 'listVal');
         if(element != undefined){
-            this.#ref = new WeakRef(element);
+            proxy.observedElement = new WeakRef(element);
         }
     }
-    beOrdered({listVal, initialOrder, sortOn, list}: this): void {
-        const element = this.#ref?.deref();
+    beOrdered({listVal, initialOrder, sortOn, list, observedElement}: this): void {
+        if(this.#ignoreNextUpdate){
+            this.#ignoreNextUpdate = false;
+            return;
+        }
+        const element = observedElement.deref();
         const propName = list.onSet || list.vft;
         if(element === undefined || propName === undefined) return;
         listVal.sort((a, b) => {
@@ -26,6 +30,7 @@ export class BeOrdering implements BeOrderingActions{
                 return 0;
             }
         });
+        this.#ignoreNextUpdate = true;
         (<any>element)[propName] = [...listVal]; 
     }
 }
@@ -44,9 +49,12 @@ define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, B
         propDefaults:{
             upgrade,
             ifWantsToBe,
-            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal'],
+            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
             actions:{
-                onList: 'list'
+                onList: 'list',
+                beOrdered: {
+                    ifAllOf: ['listVal', 'initialOrder', 'sortOn', 'observedElement'],
+                }
             },
             proxyPropDefaults:{
                 toggleEvent: 'click',

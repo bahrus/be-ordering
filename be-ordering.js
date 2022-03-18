@@ -2,15 +2,19 @@ import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
 import { hookUp } from 'be-observant/hookUp.js';
 export class BeOrdering {
-    #ref;
+    #ignoreNextUpdate = false;
     async onList({ list, proxy }) {
         const { element } = await hookUp(list, proxy, 'listVal');
         if (element != undefined) {
-            this.#ref = new WeakRef(element);
+            proxy.observedElement = new WeakRef(element);
         }
     }
-    beOrdered({ listVal, initialOrder, sortOn, list }) {
-        const element = this.#ref?.deref();
+    beOrdered({ listVal, initialOrder, sortOn, list, observedElement }) {
+        if (this.#ignoreNextUpdate) {
+            this.#ignoreNextUpdate = false;
+            return;
+        }
+        const element = observedElement.deref();
         const propName = list.onSet || list.vft;
         if (element === undefined || propName === undefined)
             return;
@@ -27,6 +31,7 @@ export class BeOrdering {
                 return 0;
             }
         });
+        this.#ignoreNextUpdate = true;
         element[propName] = [...listVal];
     }
 }
@@ -39,9 +44,12 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
-            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal'],
+            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
             actions: {
-                onList: 'list'
+                onList: 'list',
+                beOrdered: {
+                    ifAllOf: ['listVal', 'initialOrder', 'sortOn', 'observedElement'],
+                }
             },
             proxyPropDefaults: {
                 toggleEvent: 'click',

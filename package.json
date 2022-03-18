@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "node node_modules/xtal-test/serve.js"
   },
   "dependencies": {
     "be-decorated": "0.0.89",
     "be-hive": "0.0.36",
     "be-observant": "0.0.102"
+  },
+  "devDependencies":{
+    "xtal-test": "0.0.55",
+    "be-reformable": "0.0.34",
+    "xtal-vlist": "0.0.52"
   },
   "repository": {
     "type": "git",
