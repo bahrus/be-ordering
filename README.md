@@ -5,13 +5,18 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
 ```html
 <my-list-view-model></my-list-view-model>
 ...
-<button be-ordering='{
-    "list":{
-        "observe": "my-list-view-model",
-        "onSet": "list"
-    },
-    "sortOn": "columnA",
-    "toggleEvent":"click", //default
-    "direction":"desc",
-}'>Sort Column A</button>
+    <button be-ordering='{
+        "list": {
+            "observe": "xtal-vlist",
+            "onSet": "list",
+            "vft": "list"
+        },
+        "sortOn": "first_name",
+        "ascTransform": {
+            ".dir": ["⬆️"]
+        },
+        "descTransform": {
+            ".dir": ["⬇️"]
+        }
+    }'>Sort Column A<span class=dir></span></button>
 ```
