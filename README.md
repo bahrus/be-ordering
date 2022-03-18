@@ -11,7 +11,7 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
             "onSet": "list",
             "vft": "list"
         },
-        "sortOn": "first_name",
+        "listProp": "first_name",
         "ascTransform": {
             ".dir": ["⬆️"]
         },

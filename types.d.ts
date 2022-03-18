@@ -1,7 +1,7 @@
 import {IObserve} from 'be-observant/types';
 export interface BeOrderingVirtualProps{
     list: IObserve;
-    sortOn: string;
+    listProp: string;
     toggleEvent: string;
     direction: string;
     listVal: any[];

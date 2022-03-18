@@ -9,7 +9,7 @@ export class BeOrdering {
             proxy.observedElement = new WeakRef(element);
         }
     }
-    beOrdered({ listVal, direction, sortOn, list, observedElement }) {
+    beOrdered({ listVal, direction, listProp, list, observedElement }) {
         if (this.#ignoreNextUpdate) {
             this.#ignoreNextUpdate = false;
             return;
@@ -20,8 +20,8 @@ export class BeOrdering {
             return;
         listVal.sort((a, b) => {
             const multiplier = direction === 'asc' ? 1 : -1;
-            let aVal = a[sortOn];
-            let bVal = b[sortOn];
+            let aVal = a[listProp];
+            let bVal = b[listProp];
             if (aVal < bVal) {
                 return -1 * multiplier;
             }
@@ -70,11 +70,11 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
-            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform'],
+            virtualProps: ['direction', 'listProp', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform'],
             actions: {
                 onList: 'list',
                 beOrdered: {
-                    ifAllOf: ['listVal', 'direction', 'sortOn', 'observedElement'],
+                    ifAllOf: ['listVal', 'direction', 'listProp', 'observedElement'],
                 },
                 onToggleEvent: 'toggleEvent',
             },
