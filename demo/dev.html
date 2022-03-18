@@ -16,7 +16,11 @@
         action="test.json"
     >
     </form>
-    <xtal-vlist -list></xtal-vlist>
+    <xtal-vlist -list row-transform='{
+        ".first_name": "first_name" 
+    }'>
+        <div slot='row'><span class=first_name></span></div>
+    </xtal-vlist>
     <button be-ordering='{
         "list": {
             "observe": "xtal-vlist",
