@@ -11,7 +11,7 @@ export class BeOrdering implements BeOrderingActions{
             proxy.observedElement = new WeakRef(element);
         }
     }
-    beOrdered({listVal, initialOrder, sortOn, list, observedElement}: this): void {
+    beOrdered({listVal, direction, sortOn, list, observedElement}: this): void {
         if(this.#ignoreNextUpdate){
             this.#ignoreNextUpdate = false;
             return;
@@ -20,18 +20,24 @@ export class BeOrdering implements BeOrderingActions{
         const propName = list.onSet || list.vft;
         if(element === undefined || propName === undefined) return;
         listVal.sort((a, b) => {
+            const multiplier = direction === 'asc' ? 1 : -1;
             let aVal = a[sortOn];
             let bVal = b[sortOn];
             if (aVal < bVal) {
-                return -1;
+                return -1 * multiplier;
             } else if (aVal > bVal) {
-                return 1;
+                return 1 * multiplier;
             } else {
                 return 0;
             }
         });
         this.#ignoreNextUpdate = true;
         (<any>element)[propName] = [...listVal]; 
+    }
+    onToggleEvent({proxy, toggleEvent, direction}: this){
+        proxy.addEventListener(toggleEvent, () => {
+            proxy.direction = direction === 'asc' ? 'desc' : 'asc';
+        });
     }
 }
 
@@ -49,16 +55,16 @@ define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, B
         propDefaults:{
             upgrade,
             ifWantsToBe,
-            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
+            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
             actions:{
                 onList: 'list',
                 beOrdered: {
-                    ifAllOf: ['listVal', 'initialOrder', 'sortOn', 'observedElement'],
-                }
+                    ifAllOf: ['listVal', 'direction', 'sortOn', 'observedElement'],
+                },
+                onToggleEvent: 'toggleEvent',
             },
             proxyPropDefaults:{
                 toggleEvent: 'click',
-                initialOrder: 'asc',
             }
         }
     },

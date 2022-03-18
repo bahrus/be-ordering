@@ -9,7 +9,7 @@ export class BeOrdering {
             proxy.observedElement = new WeakRef(element);
         }
     }
-    beOrdered({ listVal, initialOrder, sortOn, list, observedElement }) {
+    beOrdered({ listVal, direction, sortOn, list, observedElement }) {
         if (this.#ignoreNextUpdate) {
             this.#ignoreNextUpdate = false;
             return;
@@ -19,13 +19,14 @@ export class BeOrdering {
         if (element === undefined || propName === undefined)
             return;
         listVal.sort((a, b) => {
+            const multiplier = direction === 'asc' ? 1 : -1;
             let aVal = a[sortOn];
             let bVal = b[sortOn];
             if (aVal < bVal) {
-                return -1;
+                return -1 * multiplier;
             }
             else if (aVal > bVal) {
-                return 1;
+                return 1 * multiplier;
             }
             else {
                 return 0;
@@ -33,6 +34,11 @@ export class BeOrdering {
         });
         this.#ignoreNextUpdate = true;
         element[propName] = [...listVal];
+    }
+    onToggleEvent({ proxy, toggleEvent, direction }) {
+        proxy.addEventListener(toggleEvent, () => {
+            proxy.direction = direction === 'asc' ? 'desc' : 'asc';
+        });
     }
 }
 const tagName = 'be-ordering';
@@ -44,16 +50,16 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
-            virtualProps: ['initialOrder', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
+            virtualProps: ['direction', 'sortOn', 'toggleEvent', 'list', 'listVal', 'observedElement'],
             actions: {
                 onList: 'list',
                 beOrdered: {
-                    ifAllOf: ['listVal', 'initialOrder', 'sortOn', 'observedElement'],
-                }
+                    ifAllOf: ['listVal', 'direction', 'sortOn', 'observedElement'],
+                },
+                onToggleEvent: 'toggleEvent',
             },
             proxyPropDefaults: {
                 toggleEvent: 'click',
-                initialOrder: 'asc',
             }
         }
     },

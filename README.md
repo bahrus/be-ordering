@@ -12,6 +12,6 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
     },
     "sortOn": "columnA",
     "toggleEvent":"click", //default
-    "initialOrder":"desc",
+    "direction":"desc",
 }'>Sort Column A</button>
 ```

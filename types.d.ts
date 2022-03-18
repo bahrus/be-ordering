@@ -3,7 +3,7 @@ export interface BeOrderingVirtualProps{
     list: IObserve;
     sortOn: string;
     toggleEvent: string;
-    initialOrder: string;
+    direction: string;
     listVal: any[];
     observedElement: WeakRef<Element>;
 }
@@ -13,6 +13,7 @@ export interface BeOrderingProps extends BeOrderingVirtualProps{
 }
 
 export interface BeOrderingActions{
-    onList(self: this): void;
+    onList(self: this): Promise<void>;
     beOrdered(self: this): void;
+    onToggleEvent(self: this): void;
 }
