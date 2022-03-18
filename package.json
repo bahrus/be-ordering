@@ -1,10 +1,19 @@
 {
   "name": "be-ordering",
   "version": "0.0.0",
-  "description": "",
-  "main": "index.js",
+  "keywords": [
+    "web-components",
+    "web-component",
+    "custom-element",
+    "custom-elements",
+    "sorting"
+  ],
+  "description": "Web component decorator that allows a button to sort a list property of another element.",
+  "main": "be-ordering.js",
+  "module": "be-ordering.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "package-check": "package-check",
     "serve": "node node_modules/xtal-test/serve.js"
   },
   "dependencies": {
@@ -14,9 +23,16 @@
   },
   "devDependencies":{
     "xtal-test": "0.0.55",
+    "@skypack/package-check": "0.2.2",
     "be-reformable": "0.0.34",
     "xtal-vlist": "0.0.52"
   },
+  "exports":{
+    ".": "./be-ordering.js",
+    "./be-ordering.js": "./be-ordering.js"
+  },
+  "files":["*.*"],
+  "types": "types.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bahrus/be-ordering.git"
