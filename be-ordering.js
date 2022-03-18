@@ -1,9 +1,9 @@
 import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
-import { hookUp } from 'be-observant/hookUp.js';
 export class BeOrdering {
     #ignoreNextUpdate = false;
     async onList({ list, proxy }) {
+        const { hookUp } = await import('be-observant/hookUp.js');
         const { element } = await hookUp(list, proxy, 'listVal');
         if (element != undefined) {
             proxy.observedElement = new WeakRef(element);

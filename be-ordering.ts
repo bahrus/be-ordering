@@ -1,12 +1,12 @@
 import {BeOrderingActions, BeOrderingProps, BeOrderingVirtualProps} from './types';
 import {register} from 'be-hive/register.js';
 import {define, BeDecoratedProps} from 'be-decorated/be-decorated.js';
-import {hookUp} from 'be-observant/hookUp.js';
 import { RenderContext } from 'trans-render/lib/types';
 
 export class BeOrdering implements BeOrderingActions{
     #ignoreNextUpdate = false;
     async onList({list, proxy}: this){
+        const {hookUp} = await import('be-observant/hookUp.js');
         const {element} = await hookUp(list, proxy, 'listVal');
         if(element != undefined){
             proxy.observedElement = new WeakRef(element);
