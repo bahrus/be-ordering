@@ -8,8 +8,7 @@
 </head>
 <body>
     <form be-reformable='{
-        "autoSubmit": true,
-        "debug": true
+        "autoSubmit": true
     }'
 
         target="[-list]"
@@ -29,10 +28,11 @@
         },
         "descTransform": {
             ".dir": ["⬇️"]
-        }
+        },
+        "debug": true
     }'
     >
-        <button class='sorter' type='button'>sort <span class=dir></span></button>
+        <button class='sorter' name='first_name' type='button'>sort <span class=dir></span></button>
         <xtal-vlist -list row-transform='{
             ".first_name": "first_name" 
         }'>

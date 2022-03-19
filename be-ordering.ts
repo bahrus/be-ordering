@@ -13,6 +13,7 @@ export class BeOrdering implements BeOrderingActions{
         }
     }
     beOrdered({listVal, direction, listProp, list, observedElement}: this): void {
+        console.log('beOrdered');
         if(this.#ignoreNextUpdate){
             this.#ignoreNextUpdate = false;
             return;
@@ -37,8 +38,10 @@ export class BeOrdering implements BeOrderingActions{
     }
     onToggleEvent({proxy, toggleEvent, ascTransform, descTransform, eventFilter}: this){
         proxy.addEventListener(toggleEvent, async (e) => {
-            if(!(e.target as HTMLElement).matches(eventFilter.targetMatches)) return;
+            const target = e.target as HTMLButtonElement;
+            if(!target.matches(eventFilter.targetMatches)) return;
             proxy.direction = proxy.direction === 'asc' ? 'desc' : 'asc';
+            proxy.listProp = target.name;
             if(ascTransform || descTransform){
                 const {DTR} = await import('trans-render/lib/DTR.js');
                 const ctx: RenderContext = {
