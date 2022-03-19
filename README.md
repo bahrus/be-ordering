@@ -21,9 +21,7 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
         "targetMatches": ".sorter"
     }
 }'>
-    <button class=sorter name=first_name be-ordering='{
-        "listProp": "first_name",
-    }'>Sort Column A<span class=dir></span></button>
+    <button class=sorter name=first_name>Sort Column A<span class=dir></span></button>
 </form>
 ```
 
