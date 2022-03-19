@@ -2,6 +2,7 @@ import { register } from 'be-hive/register.js';
 import { define } from 'be-decorated/be-decorated.js';
 export class BeOrdering {
     #ignoreNextUpdate = false;
+    #previousSortElements = {};
     async onList({ list, proxy }) {
         const { hookUp } = await import('be-observant/hookUp.js');
         const { element } = await hookUp(list, proxy, 'listVal');
@@ -36,18 +37,28 @@ export class BeOrdering {
         this.#ignoreNextUpdate = true;
         element[propName] = [...listVal];
     }
-    onToggleEvent({ proxy, toggleEvent, ascTransform, descTransform, eventFilter }) {
+    onToggleEvent({ proxy, toggleEvent, ascTransform, descTransform, eventFilter, neutralTransform }) {
         proxy.addEventListener(toggleEvent, async (e) => {
             const target = e.target;
             if (!target.matches(eventFilter.targetMatches))
                 return;
             proxy.direction = proxy.direction === 'asc' ? 'desc' : 'asc';
             proxy.listProp = target.name;
-            if (ascTransform || descTransform) {
+            if (ascTransform || descTransform || neutralTransform) {
                 const { DTR } = await import('trans-render/lib/DTR.js');
                 const ctx = {
                     host: proxy,
                 };
+                if (neutralTransform !== undefined) {
+                    ctx.match = neutralTransform;
+                    for (const key in this.#previousSortElements) {
+                        const previousElement = this.#previousSortElements[key].deref();
+                        if (previousElement !== undefined) {
+                            DTR.transform(previousElement, ctx);
+                        }
+                    }
+                    this.#previousSortElements = {};
+                }
                 switch (proxy.direction) {
                     case 'asc':
                         if (ascTransform !== undefined) {
@@ -62,6 +73,7 @@ export class BeOrdering {
                         }
                         break;
                 }
+                this.#previousSortElements[target.name] = new WeakRef(target);
             }
         });
     }
@@ -75,7 +87,7 @@ define({
         propDefaults: {
             upgrade,
             ifWantsToBe,
-            virtualProps: ['direction', 'listProp', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform', 'eventFilter'],
+            virtualProps: ['direction', 'listProp', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform', 'eventFilter', 'neutralTransform'],
             actions: {
                 onList: 'list',
                 beOrdered: {

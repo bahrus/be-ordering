@@ -29,11 +29,13 @@
         "descTransform": {
             ".dir": ["⬇️"]
         },
-        "debug": true
+        "neutralTransform": {
+            ".dir": [""]
+        }
     }'
     >
-        <button class='sorter' name='first_name' type='button'>sort <span class=dir></span></button>
-        <button class='sorter' name='last_name' type='button'>sort <span class=dir></span></button>
+        <button class='sorter' name='first_name' type='button'>First Name<span class=dir></span></button>
+        <button class='sorter' name='last_name' type='button'>Last Name<span class=dir></span></button>
         <xtal-vlist -list row-transform='{
             ".first_name": "first_name", 
             ".last_name": "last_name"
