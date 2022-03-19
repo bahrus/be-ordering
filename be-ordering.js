@@ -52,13 +52,13 @@ export class BeOrdering {
                     case 'asc':
                         if (ascTransform !== undefined) {
                             ctx.match = ascTransform;
-                            DTR.transform(proxy, ctx);
+                            DTR.transform(target, ctx);
                         }
                         break;
                     case 'desc':
                         if (descTransform !== undefined) {
                             ctx.match = descTransform;
-                            DTR.transform(proxy, ctx);
+                            DTR.transform(target, ctx);
                         }
                         break;
                 }

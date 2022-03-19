@@ -33,10 +33,15 @@
     }'
     >
         <button class='sorter' name='first_name' type='button'>sort <span class=dir></span></button>
+        <button class='sorter' name='last_name' type='button'>sort <span class=dir></span></button>
         <xtal-vlist -list row-transform='{
-            ".first_name": "first_name" 
+            ".first_name": "first_name", 
+            ".last_name": "last_name"
         }'>
-            <div slot='row'><span class=first_name></span></div>
+            <div slot='row'>
+                <span class=first_name></span>
+                <span class=last_name></span>
+            </div>
         </xtal-vlist>
     
 </form>
