@@ -19,7 +19,7 @@
   "dependencies": {
     "be-decorated": "0.0.89",
     "be-hive": "0.0.36",
-    "be-observant": "0.0.102"
+    "be-observant": "0.0.103"
   },
   "devDependencies":{
     "xtal-test": "0.0.55",

@@ -35,8 +35,9 @@ export class BeOrdering implements BeOrderingActions{
         this.#ignoreNextUpdate = true;
         (<any>element)[propName] = [...listVal]; 
     }
-    onToggleEvent({proxy, toggleEvent, ascTransform, descTransform}: this){
-        proxy.addEventListener(toggleEvent, async () => {
+    onToggleEvent({proxy, toggleEvent, ascTransform, descTransform, eventFilter}: this){
+        proxy.addEventListener(toggleEvent, async (e) => {
+            if(!(e.target as HTMLElement).matches(eventFilter.targetMatches)) return;
             proxy.direction = proxy.direction === 'asc' ? 'desc' : 'asc';
             if(ascTransform || descTransform){
                 const {DTR} = await import('trans-render/lib/DTR.js');
@@ -69,7 +70,7 @@ const tagName = 'be-ordering';
 
 const ifWantsToBe = 'ordering';
 
-const upgrade = '*';
+const upgrade = 'form';
 
 define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, BeOrderingActions>({
     config:{
@@ -77,7 +78,7 @@ define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, B
         propDefaults:{
             upgrade,
             ifWantsToBe,
-            virtualProps: ['direction', 'listProp', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform'],
+            virtualProps: ['direction', 'listProp', 'toggleEvent', 'list', 'listVal', 'observedElement', 'ascTransform', 'descTransform', 'eventFilter'],
             actions:{
                 onList: 'list',
                 beOrdered: {
@@ -87,6 +88,9 @@ define<BeOrderingProps & BeDecoratedProps<BeOrderingProps, BeOrderingActions>, B
             },
             proxyPropDefaults:{
                 toggleEvent: 'click',
+                eventFilter: {
+                    "targetMatches": ".sorter"
+                }
             }
         }
     },

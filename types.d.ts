@@ -8,6 +8,9 @@ export interface BeOrderingVirtualProps{
     observedElement: WeakRef<Element>;
     ascTransform: any;
     descTransform: any;
+    eventFilter: {
+        targetMatches: string
+    }
 }
 
 export interface BeOrderingProps extends BeOrderingVirtualProps{

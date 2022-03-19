@@ -21,8 +21,11 @@ be-ordering is a web component decorator / custom attribute / behavior / directi
         "targetMatches": ".sorter"
     }
 }'>
-    <button class=sorter name=first_name>Sort Column A<span class=dir></span></button>
+    <button type=button class=sorter name=first_name>Sort Column A<span class=dir></span></button>
 </form>
 ```
 
-TODO:  Allow sorting on DOM elements.
+TODO:  
+
+1.  Allow sorting on DOM elements(?).
+2.  Multi column sorting.

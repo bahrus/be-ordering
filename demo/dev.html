@@ -16,14 +16,10 @@
         action="test.json"
     >
     </form>
-    <xtal-vlist -list row-transform='{
-        ".first_name": "first_name" 
-    }'>
-        <div slot='row'><span class=first_name></span></div>
-    </xtal-vlist>
-    <button be-ordering='{
+
+    <form be-ordering='{
         "list": {
-            "observe": "xtal-vlist",
+            "observeInward": "xtal-vlist",
             "onSet": "list",
             "vft": "list"
         },
@@ -34,7 +30,17 @@
         "descTransform": {
             ".dir": ["⬇️"]
         }
-    }'>sort <span class=dir></span></button>
+    }'
+    >
+        <button type='button'>sort <span class=dir></span></button>
+        <xtal-vlist -list row-transform='{
+            ".first_name": "first_name" 
+        }'>
+            <div slot='row'><span class=first_name></span></div>
+        </xtal-vlist>
+    
+</form>
+    
     <script type=importmap>
         {
             "imports": {
